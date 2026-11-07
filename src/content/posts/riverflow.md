@@ -11,7 +11,7 @@ Between 2023 and 2024 I was the co-founder and CTO of [Riverflow](/projects/), a
 
 ## A message out of nowhere
 
-On June 13, 2023, I was working at Pooky when a stranger wrote to me on LinkedIn. [Ludovic Simon](https://www.linkedin.com/in/simonludovic/) was starting a web3 project with a strong tech and data side, with Hexa, and he was looking for a co-founder and CTO. Did I want to talk?
+On June 13, 2023, I was writing smart contracts at [Pooky](/projects/) when a stranger wrote to me on LinkedIn. [Ludovic Simon](https://www.linkedin.com/in/simonludovic/) was starting a web3 project with a strong tech and data side, with Hexa, and he was looking for a co-founder and CTO. Did I want to talk?
 
 A cold message from someone I had never met, for a company that didn't exist yet: it was a little strange. But I replied within a minute that I was, as it happened, looking to start something myself. We had a call that same afternoon, right after a release I had to ship.
 

@@ -6,5 +6,5 @@ url: https://mat.bour.io
 repo: https://github.com/matbour/mat.bour.io
 post: how-this-blog-is-built
 year: 2026
-order: 10
+order: 11
 ---

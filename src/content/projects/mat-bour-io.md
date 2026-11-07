@@ -7,5 +7,5 @@ repo: https://github.com/matbour/mat.bour.io
 post: how-this-blog-is-built
 year: 2023
 until: present
-order: 6
+order: 2
 ---

@@ -4,7 +4,7 @@ summary: I chair the board of my building's co-owners and run its work with AI a
 stack: [TypeScript, Bun, MCP, Claude, Ollama, bge-m3, SQLite, OAuth 2.1]
 year: 2026
 until: present
-order: 11
+order: 1
 ---
 
 The building I live in is a condominium of three buildings over a shared underground car park. As president of its _conseil syndical_, the board elected to oversee the property manager, I deal with invoices, quotes, contracts, leaks and a long list of contractors. I run most of it with agents.

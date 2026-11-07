@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
 import { getPosts } from '../lib/posts';
 
 const projects = await Promise.all(
@@ -9,45 +10,33 @@ const projects = await Promise.all(
     .map(async (entry) => ({ data: entry.data, Content: (await render(entry)).Content })),
 );
 
-const years = ({ year, until }: { year: number; until?: number | 'present' }) =>
-  until === undefined || until === year ? `${year}` : `${year}–${until === 'present' ? 'now' : until}`;
-
 // Only link to posts that are published in this build (drafts are dev-only).
 const postIds = new Set((await getPosts()).map((p) => p.id));
 
 const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Archived' } as const;
 ---
 
-<Base title="Projects" description="Things Mathieu Bour has built, at work and at home.">
+<Base title="Projects" description="Things Mathieu Bour builds on his own time.">
   <h1>Projects</h1>
-  <p class="lede muted">Things I've built, at work and at home.</p>
+  <p class="lede muted">
+    Things I build on my own time. For what I've built at work, see <a href="/experience/">experience</a>.
+  </p>
 
-  <ul class="projects">
-    {projects.map(({ data, Content }) => {
-      const post = data.post && postIds.has(data.post) ? data.post : undefined;
-      return (
-        <li>
-          <h2>
-            {data.url ? <a href={data.url}>{data.name}</a> : data.name}
-            <span class="year">{years(data)}</span>
-          </h2>
-          <p>{data.summary}</p>
-          <div class="prose body">
-            <Content />
-          </div>
-          <p class="details muted">
-            {data.stack.join(', ')}
-            {data.status !== 'active' && <span>. {statusLabel[data.status]}</span>}
-          </p>
-          {(data.repo || post) && (
-            <p class="links">
-              {post && <a href={`/posts/${post}/`}>Read the story</a>}
-              {data.repo && <a href={data.repo}>Source</a>}
-            </p>
-          )}
-        </li>
-      );
-    })}
+  <ul class="entries">
+    {projects.map(({ data, Content }) => (
+      <Entry
+        title={data.name}
+        url={data.url}
+        year={data.year}
+        until={data.until}
+        summary={data.summary}
+        details={data.stack.join(', ') + (data.status !== 'active' ? `. ${statusLabel[data.status]}` : '')}
+        post={data.post && postIds.has(data.post) ? data.post : undefined}
+        repo={data.repo}
+      >
+        <Content />
+      </Entry>
+    ))}
   </ul>
 </Base>
 
@@ -61,53 +50,9 @@ const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Arc
     margin: 0 0 2.5rem;
   }
 
-  .projects {
+  .entries {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .projects > li + li {
-    margin-top: 2.25rem;
-  }
-
-  h2 {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 0 0 0.3rem;
-    font-size: 1.15rem;
-  }
-
-  .year {
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--muted);
-    font-variant-numeric: lining-nums;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .body {
-    margin-top: 0.4rem;
-  }
-
-  .body:empty {
-    display: none;
-  }
-
-  .details {
-    margin-top: 0.3rem;
-    font-size: 0.85rem;
-  }
-
-  .links {
-    display: flex;
-    gap: 1.25rem;
-    margin-top: 0.4rem;
-    font-size: 0.9rem;
   }
 </style>

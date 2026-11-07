@@ -22,7 +22,7 @@ Today I'm CTO and late founder at FANtium, where I designed and built two crypto
 
 ## Before FANtium
 
-In 2023 I co-founded Riverflow, a blockchain data startup, at 3founders, the web3 studio of Hexa. Mobula, a blockchain market data company, acqui-hired the team in April 2024 and I became its CTO; fomo later bought its technology. Before that I wrote the smart contracts for Pooky and TheAssetsClub, built a cloud platform at SquareFactory and an investment portal for DeepSquare, and started out as the first developer at Mathrix, an edtech startup with a large YouTube audience. Each one, with numbers and sources, is on the [projects page](/projects/).
+In 2023 I co-founded Riverflow, a blockchain data startup, at 3founders, the web3 studio of Hexa. Mobula, a blockchain market data company, acqui-hired the team in April 2024 and I became its CTO; fomo later bought its technology. Before that I wrote the smart contracts for Pooky, built a cloud platform at SquareFactory and an investment portal for DeepSquare, and started out as the first developer at Mathrix, an edtech startup with a large YouTube audience. Each one, with numbers and sources, is on the [experience page](/experience/). Side projects, like the TheAssetsClub NFT contracts, are on the [projects page](/projects/).
 
 I studied computer science and microelectronics at [École des Mines de Saint-Étienne](https://www.mines-stetienne.fr/en/programmes/masters-degree-in-microelectronic-systems-engineering-and-computer-science-ismin), including a security module on cryptography, side-channel attacks and fault injection.
 

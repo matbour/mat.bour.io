@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import { getPosts } from '../lib/posts';
+
+// Newest first: current jobs on top, then by end year, then by start year.
+const end = (until: number | 'present' | undefined, year: number) => (until === 'present' ? Infinity : (until ?? year));
+
+const jobs = await Promise.all(
+  (await getCollection('experience'))
+    .sort((a, b) => end(b.data.until, b.data.year) - end(a.data.until, a.data.year) || b.data.year - a.data.year)
+    .map(async (entry) => ({ data: entry.data, Content: (await render(entry)).Content })),
+);
+
+// Only link to posts that are published in this build (drafts are dev-only).
+const postIds = new Set((await getPosts()).map((p) => p.id));
+---
+
+<Base title="Experience" description="Where Mathieu Bour has worked, and what he built there.">
+  <h1>Experience</h1>
+  <p class="lede muted">
+    Where I've worked, and what I built there. For what I build on my own time, see <a href="/projects/">projects</a>.
+  </p>
+
+  <ul class="entries">
+    {jobs.map(({ data, Content }) => (
+      <Entry
+        title={data.company}
+        url={data.url}
+        year={data.year}
+        until={data.until}
+        role={data.role}
+        summary={data.summary}
+        details={data.stack.join(', ')}
+        post={data.post && postIds.has(data.post) ? data.post : undefined}
+        repo={data.repo}
+      >
+        <Content />
+      </Entry>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .lede {
+    margin: 0 0 2.5rem;
+  }
+
+  .entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

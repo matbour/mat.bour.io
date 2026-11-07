@@ -1,0 +1,88 @@
+---
+// One item on the Experience or Projects page. The Markdown body goes in the slot.
+interface Props {
+  title: string;
+  url?: string;
+  year: number;
+  until?: number | 'present';
+  role?: string;
+  summary: string;
+  details?: string;
+  post?: string;
+  repo?: string;
+}
+
+const { title, url, year, until, role, summary, details, post, repo } = Astro.props;
+const years = until === undefined || until === year ? `${year}` : `${year}–${until === 'present' ? 'now' : until}`;
+---
+
+<li class="entry">
+  <h2>
+    {url ? <a href={url}>{title}</a> : title}
+    <span class="year">{years}</span>
+  </h2>
+  {role && <p class="role">{role}</p>}
+  <p>{summary}</p>
+  <div class="prose body">
+    <slot />
+  </div>
+  {details && <p class="details muted">{details}</p>}
+  {(repo || post) && (
+    <p class="links">
+      {post && <a href={`/posts/${post}/`}>Read the story</a>}
+      {repo && <a href={repo}>Source</a>}
+    </p>
+  )}
+</li>
+
+<style>
+  .entry + .entry {
+    margin-top: 2.25rem;
+  }
+
+  h2 {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 0.3rem;
+    font-size: 1.15rem;
+  }
+
+  .year {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--muted);
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .role {
+    font-style: italic;
+    margin-bottom: 0.2rem;
+  }
+
+  .body {
+    margin-top: 0.4rem;
+  }
+
+  .body:empty {
+    display: none;
+  }
+
+  .details {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+  }
+</style>

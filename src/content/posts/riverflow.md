@@ -7,11 +7,11 @@ tags: [startups, blockchain, hexa]
 draft: true
 ---
 
-Between 2023 and 2024 I was the co-founder and CTO of [Riverflow](/projects/), a blockchain data startup built inside [Hexa](https://hexa.com), the startup studio behind Front, Spendesk and Aircall. It lasted less than a year before the team joined Mobula. The product was the reason we were there, but the people are what I remember most.
+Between 2023 and 2024 I was the co-founder and CTO of [Riverflow](/experience/), a blockchain data startup built inside [Hexa](https://hexa.com), the startup studio behind Front, Spendesk and Aircall. It lasted less than a year before the team joined Mobula. The product was the reason we were there, but the people are what I remember most.
 
 ## A message out of nowhere
 
-On June 13, 2023, I was writing smart contracts at [Pooky](/projects/) when a stranger wrote to me on LinkedIn. [Ludovic Simon](https://www.linkedin.com/in/simonludovic/) was starting a web3 project with a strong tech and data side, with Hexa, and he was looking for a co-founder and CTO. Did I want to talk?
+On June 13, 2023, I was writing smart contracts at [Pooky](/experience/) when a stranger wrote to me on LinkedIn. [Ludovic Simon](https://www.linkedin.com/in/simonludovic/) was starting a web3 project with a strong tech and data side, with Hexa, and he was looking for a co-founder and CTO. Did I want to talk?
 
 A cold message from someone I had never met, for a company that didn't exist yet: it was a little strange. But I replied within a minute that I was, as it happened, looking to start something myself. We had a call that same afternoon, right after a release I had to ship.
 

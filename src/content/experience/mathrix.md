@@ -1,12 +1,12 @@
 ---
-name: Mathrix
-summary: First developer, then vice-CTO and CTO, of a Swiss edtech startup teaching maths and science to French-speaking students.
+company: Mathrix
+role: First developer, then vice-CTO and CTO
+summary: A Swiss edtech startup teaching maths and science to French-speaking students.
 stack: [PHP, Lumen, GraphQL, Angular, Stripe, Braintree, Kubernetes, GCP]
 url: https://www.youtube.com/@Mathrix
 repo: https://github.com/mathrix-education/railgun
 year: 2017
 until: 2020
-order: 10
 ---
 
 Mathrix, [backed by Venture Kick](https://www.venturekick.ch/Mathrix), teaches through videos and exercises. Its YouTube channel has more than 580,000 subscribers. I made the first commit of its API on July 4, 2017, with OAuth 2 from day one, and pushed its last deploy in 2023. Across the company's 50 repositories, I wrote 5,100 of the 10,000 commits.

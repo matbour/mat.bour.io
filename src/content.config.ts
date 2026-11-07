@@ -19,6 +19,26 @@ const posts = defineCollection({
   }),
 });
 
+// Where I've worked: one entry per company, newest first (sorted by dates, no manual order).
+const experience = defineCollection({
+  loader: glob({ base: './src/content/experience', pattern: '**/*.md' }),
+  schema: z.object({
+    company: z.string(),
+    role: z.string(),
+    // What the company does, in one sentence.
+    summary: z.string(),
+    stack: z.array(z.string()).default([]),
+    url: z.url().optional(),
+    repo: z.url().optional(),
+    // Optional link to a post that tells the story behind the job.
+    post: z.string().optional(),
+    year: z.number().int(),
+    // Last year there, shown as a range ("2020–2022"). Leave out for a single year.
+    until: z.union([z.number().int(), z.literal('present')]).optional(),
+  }),
+});
+
+// Things I build on my own time.
 const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.md' }),
   schema: z.object({
@@ -37,4 +57,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { posts, projects };
+export const collections = { posts, experience, projects };

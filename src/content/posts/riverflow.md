@@ -27,7 +27,9 @@ I owe Florent more than I can fit in a paragraph. He's an exceptional person, an
 
 ## Scrappy offices
 
-Hexa's offices, near the Poissonnière metro station in Paris, were in the middle of renovation work. It was scrappy, and it was great. Building a startup in a building that was itself being rebuilt felt about right.
+Hexa's offices, La Cristallerie, near the Poissonnière metro station in Paris, were in the middle of renovation work. It was scrappy, and it was great. Building a startup in a building that was itself being rebuilt felt about right.
+
+![La Cristallerie in October 2023: people at their desks under the glass roof, next to stacked wooden panels, chairs still wrapped in plastic and a ladder](../../assets/posts/riverflow/la-cristallerie.jpg)
 
 ## The people
 

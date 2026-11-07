@@ -5,6 +5,7 @@ stack: [Astro, Bun, Docker, Caddy, Coolify, Cloudflare Tunnel, Orange Pi]
 url: https://mat.bour.io
 repo: https://github.com/matbour/mat.bour.io
 post: how-this-blog-is-built
-year: 2026
-order: 11
+year: 2023
+until: present
+order: 6
 ---

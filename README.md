@@ -38,6 +38,7 @@ bun run preview
 Git hooks are managed by [Lefthook](https://lefthook.dev) and installed by `bun install`:
 
 - **pre-commit** formats the staged files with `bun fmt --staged`.
+- **commit-msg** checks the message follows [Conventional Commits](https://www.conventionalcommits.org) (`feat: …`, `fix: …`, `docs: …`) with commitlint.
 - **pre-push** runs `bun run check`.
 
 Skip them once with `LEFTHOOK=0 git commit …`.

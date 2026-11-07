@@ -7,6 +7,12 @@ pre-commit:
       # Formats only the staged files and stages them again.
       run: bun fmt --staged
 
+commit-msg:
+  commands:
+    conventional:
+      # Rejects messages that don't follow Conventional Commits (see commitlint.config.js).
+      run: bunx commitlint --edit {1}
+
 pre-push:
   commands:
     check:

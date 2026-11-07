@@ -180,6 +180,7 @@ jobs:
       cancel-in-progress: false
     steps:
       # Asks Coolify to redeploy the application, which pulls the new :latest.
+      # POST since Coolify 4.6 (GET now answers 405).
       # COOLIFY_TOKEN is a Coolify API token with only the "deploy" permission,
       # stored as a secret of the "production" environment, which only the
       # main branch can use (Settings > Environments > production).
@@ -190,6 +191,7 @@ jobs:
           COOLIFY_APP_UUID: ni4pzrppasynjtzybrzavjzc
         run: |
           curl --fail-with-body --silent --show-error --max-time 60 \
+            --request POST \
             --header "Authorization: Bearer $COOLIFY_TOKEN" \
             --header "Accept: application/json" \
             "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false"

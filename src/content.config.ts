@@ -14,6 +14,8 @@ const posts = defineCollection({
     updated: z.coerce.date().optional(),
     category: z.enum(categoryKeys),
     tags: z.array(z.string()).default([]),
+    // Language of the post body. The site chrome stays in English.
+    lang: z.enum(['en', 'fr']).default('en'),
     // Drafts are visible with `bun run dev` and left out of production builds.
     draft: z.boolean().default(false),
   }),

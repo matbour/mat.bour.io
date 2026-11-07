@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
-const { title, description, date, updated, category, tags, draft } = post.data;
+const { title, description, date, updated, category, tags, draft, lang } = post.data;
 
 const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const minutes = readingTime(post.body);
@@ -24,7 +24,7 @@ const minutes = readingTime(post.body);
 <Base title={title} description={description} image={`/og/${post.id}.png`} type="article" publishedTime={date}>
   <article>
     <header>
-      <h1>{title}</h1>
+      <h1 lang={lang}>{title}</h1>
       <p class="meta">
         <time datetime={date.toISOString()}>{fmt.format(date)}</time> in
         <a href={`/category/${category}/`}>{CATEGORIES[category]}</a>, {minutes} min read{draft && <em>, draft</em>}
@@ -36,7 +36,7 @@ const minutes = readingTime(post.body);
       )}
     </header>
 
-    <div class="prose">
+    <div class="prose" lang={lang}>
       <Content />
     </div>
 

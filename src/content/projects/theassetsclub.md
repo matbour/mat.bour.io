@@ -11,3 +11,5 @@ order: 5
 ---
 
 The supply cap and sale dates were hardcoded in the contract, and the reveal used Chainlink VRF so anyone could verify the shuffle.
+
+Two months before the mint, we were at [NFT Paris](https://github.com/assets-club/smart-contracts#theassetsclub-at-nft-paris-collection) on February 24-25, 2023, with a dedicated collection whose tokens gave access to the private sale.

@@ -61,6 +61,8 @@ Adrien Pisler, the designer behind TheAssetsClub, passed away in March 2025. Eve
 
 The news came from his best friend, who wanted one thing above all: that Adrien's work stays available for good, for anyone to enjoy, with no business plan or goal behind it.
 
+Two months before the mint, on February 24-25, 2023, we had the chance to be at NFT Paris, at the Grand Palais Éphémère. For the event we deployed a separate collection, [TheAssetsClub at NFT Paris](https://opensea.io/collection/theassetsclub-at-nft-paris) ([`0xd13fbe29dbd15bd0175122a4f8c90072c568511d`](https://etherscan.io/address/0xd13fbe29dbd15bd0175122a4f8c90072c568511d)). Holding one of its tokens got you onto the access list for the private sale, and the main contract kept track of each Paris token so it could only be used once.
+
 The mint closed on April 30th, 2023 as planned, with 557 Assets minted out of the 5777 the contract allowed. We never sold out, and because the cap was hardcoded, the contract simply stopped there, exactly as the post above promised. The collection is still on Ethereum at [`0xe6eb4cFd8600832edd617F6D86ab9D63A4fb7bDA`](https://etherscan.io/address/0xe6eb4cFd8600832edd617F6D86ab9D63A4fb7bDA) and on [OpenSea](https://opensea.io/collection/assetsv1). The website is offline now, but the [front-end](https://github.com/assets-club/theassets.club) and the [smart contracts](https://github.com/assets-club/smart-contracts) are still on GitHub.
 
 Thank you, Adrien.

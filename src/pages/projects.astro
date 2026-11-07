@@ -1,11 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { getPosts } from '../lib/posts';
 
-const projects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order || b.data.year - a.data.year,
+const projects = await Promise.all(
+  (await getCollection('projects'))
+    .sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year)
+    .map(async (entry) => ({ data: entry.data, Content: (await render(entry)).Content })),
 );
+
+const years = ({ year, until }: { year: number; until?: number | 'present' }) =>
+  until === undefined || until === year ? `${year}` : `${year}–${until === 'present' ? 'now' : until}`;
 
 // Only link to posts that are published in this build (drafts are dev-only).
 const postIds = new Set((await getPosts()).map((p) => p.id));
@@ -18,15 +23,18 @@ const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Arc
   <p class="lede muted">Things I've built, at work and at home.</p>
 
   <ul class="projects">
-    {projects.map(({ data }) => {
+    {projects.map(({ data, Content }) => {
       const post = data.post && postIds.has(data.post) ? data.post : undefined;
       return (
         <li>
           <h2>
             {data.url ? <a href={data.url}>{data.name}</a> : data.name}
-            <span class="year">{data.year}</span>
+            <span class="year">{years(data)}</span>
           </h2>
           <p>{data.summary}</p>
+          <div class="prose body">
+            <Content />
+          </div>
           <p class="details muted">
             {data.stack.join(', ')}
             {data.status !== 'active' && <span>. {statusLabel[data.status]}</span>}
@@ -81,6 +89,14 @@ const statusLabel = { active: 'Active', maintained: 'Maintained', archived: 'Arc
 
   p {
     margin: 0;
+  }
+
+  .body {
+    margin-top: 0.4rem;
+  }
+
+  .body:empty {
+    display: none;
   }
 
   .details {

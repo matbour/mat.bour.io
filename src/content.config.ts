@@ -30,6 +30,8 @@ const projects = defineCollection({
     // Optional link to a post that tells the story behind the project.
     post: z.string().optional(),
     year: z.number().int(),
+    // Last year of involvement, shown as a range ("2020–2022"). Leave out for a single year.
+    until: z.union([z.number().int(), z.literal('present')]).optional(),
     status: z.enum(['active', 'maintained', 'archived']).default('active'),
     order: z.number().default(0),
   }),

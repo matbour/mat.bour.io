@@ -16,7 +16,7 @@ Today I'm CTO and late founder at FANtium, where I designed and built two crypto
 
 **Facts over opinions.** I decide what to build next from funnels, metrics and revenue, and I prefer systems anyone can check. For the TheAssetsClub mint, the supply cap and sale dates were hardcoded in the contract, so nobody had to take our word for it ([the story](/posts/theassetsclub-mint/)).
 
-**Small, senior teams.** I hire carefully, set engineering standards early, and stay hands-on across architecture, backend, frontend, smart contracts and data. From 2023 to 2025 I also taught blockchain and Solidity to engineering students at [Mewo](https://www.mewo.fr).
+**Small, senior teams.** I hire carefully, set engineering standards early, and stay hands-on across architecture, backend, frontend, smart contracts and data. I also teach DevOps, Infrastructure as Code and blockchain to engineering students at [Mewo](https://www.mewo.fr), where I've lectured since 2023.
 
 ## Before FANtium
 

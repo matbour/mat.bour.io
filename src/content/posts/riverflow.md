@@ -39,6 +39,8 @@ On the engineering side, [Valentin Pollart](https://github.com/valentinpollart) 
 
 Riverflow pulled activity from the main EVM chains (Ethereum, Polygon, Avalanche, Arbitrum) and routed it to webhooks, data warehouses and SaaS tools. Hexa [introduced it](https://hexa.com/blog/article/were-launching-riverflow-to-finally-make-blockchain-data-actionable) in October 2023 as a way to make blockchain data actionable across teams, and [TechCrunch](https://techcrunch.com/2023/10/30/hexa-the-startup-studio-behind-front-spendesk-and-aircall-unveils-its-next-batch-of-startups/) described it as "more like Segment than Zapier".
 
+![Me and a teammate at Hexa, standing under a Vestaboard that reads "WE ARE RIVERFLOW 3F#23"](../../assets/posts/riverflow/we-are-riverflow.jpg)
+
 ## Meeting Sacha
 
 Along the way I met [Sacha Marcus](https://www.linkedin.com/in/sacha-marcus/), the founder of [Mobula](https://mobula.io). He's one of the best entrepreneurs I know, and we got along almost immediately. In April 2024 Mobula acqui-hired Riverflow: the technology and every engineer on the team moved over, and I became Mobula's CTO. That chapter is its own story.

@@ -1,0 +1,167 @@
+# Builds the container image, scans it with Trivy, pushes it to GHCR, signs it
+# with cosign (keyless) and attaches a signed CycloneDX SBOM.
+#
+# Pull requests: build + scan only, nothing is published.
+# main: build + scan, then push, sign and attest.
+# Weekly: same as main, to pick up patched base images and newly published CVEs.
+#
+# Actions are pinned to commit SHAs (tags can be moved, see the trivy-action
+# compromise of March 2026). Dependabot keeps the pins up to date.
+
+name: Image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '23 5 * * 1' # Mondays, 05:23 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Never cancel a run on main halfway through push/sign/attest.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions: {}
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+  # The Orange Pi is arm64, and so are Apple Silicon Macs.
+  PLATFORM: linux/arm64
+  TRIVY_VERSION: v0.76.1
+
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write # push to GHCR
+      id-token: write # OIDC token for keyless signing (Sigstore)
+      security-events: write # Trivy results in the Security tab
+    env:
+      PUBLISH: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
+
+      # ---- 1. Build locally and scan, before anything is published ----
+
+      - name: Build
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: ${{ env.PLATFORM }}
+          load: true
+          tags: site:scan
+          build-args: |
+            PUBLIC_UMAMI_SRC=${{ vars.PUBLIC_UMAMI_SRC }}
+            PUBLIC_UMAMI_WEBSITE_ID=${{ vars.PUBLIC_UMAMI_WEBSITE_ID }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Scan (full report for the Security tab)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: ${{ env.TRIVY_VERSION }}
+          image-ref: site:scan
+          format: sarif
+          output: trivy.sarif
+
+      - name: Upload scan results
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-image
+
+      # Fails the run on a CRITICAL vulnerability that has a fix available.
+      # HIGH and below only show up in the Security tab: base image CVEs often
+      # need an upstream release, and that shouldn't block publishing a post.
+      # Accept a specific CVE by adding its ID to a .trivyignore file.
+      - name: Scan (gate)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          skip-setup-trivy: true
+          image-ref: site:scan
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+
+      # ---- 2. Publish: push, sign, attach the signed SBOM ----
+
+      - name: Log in to GHCR
+        if: env.PUBLISH == 'true'
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Same inputs as the scanned build, so every layer comes from the cache.
+      - name: Push
+        id: push
+        if: env.PUBLISH == 'true'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: ${{ env.PLATFORM }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            PUBLIC_UMAMI_SRC=${{ vars.PUBLIC_UMAMI_SRC }}
+            PUBLIC_UMAMI_WEBSITE_ID=${{ vars.PUBLIC_UMAMI_WEBSITE_ID }}
+          cache-from: type=gha
+          # A single-platform image without BuildKit's own attestations is a
+          # plain manifest, so the signature and SBOM sit on the digest you pull.
+          provenance: false
+
+      - name: Install cosign
+        if: env.PUBLISH == 'true'
+        uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+
+      # Keyless: cosign trades the workflow's OIDC token for a short-lived
+      # certificate tied to this repo and workflow, and the signature is logged
+      # in Sigstore's public transparency log (Rekor). No key to manage.
+      - name: Sign
+        if: env.PUBLISH == 'true'
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "$IMAGE@$DIGEST"
+
+      - name: Generate SBOM
+        if: env.PUBLISH == 'true'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          skip-setup-trivy: true
+          image-ref: ${{ env.IMAGE }}@${{ steps.push.outputs.digest }}
+          format: cyclonedx
+          output: sbom.cdx.json
+
+      # Signs the SBOM as an in-toto attestation and stores it next to the image.
+      - name: Attest SBOM
+        if: env.PUBLISH == 'true'
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign attest --yes --type cyclonedx --predicate sbom.cdx.json "$IMAGE@$DIGEST"
+
+      - name: Keep SBOM as a run artifact
+        if: env.PUBLISH == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom
+          path: sbom.cdx.json

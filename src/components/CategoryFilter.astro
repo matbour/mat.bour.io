@@ -1,0 +1,52 @@
+---
+import { CATEGORIES, type Category } from '../site.config';
+
+interface Props {
+  current?: Category;
+  /** Categories that actually have posts; empty ones are hidden. */
+  available: Category[];
+}
+
+const { current, available } = Astro.props;
+const entries = (Object.entries(CATEGORIES) as [Category, string][]).filter(([key]) => available.includes(key));
+---
+
+{entries.length > 1 && (
+  <nav class="filter" aria-label="Filter by topic">
+    <a href="/" aria-current={current ? undefined : 'page'}>
+      All
+    </a>
+    {entries.map(([key, label]) => (
+      <a href={`/category/${key}/`} aria-current={current === key ? 'page' : undefined}>
+        {label}
+      </a>
+    ))}
+  </nav>
+)}
+
+<style>
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.1rem;
+    margin-bottom: 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--ink);
+  }
+
+  a[aria-current='page'] {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+  }
+</style>

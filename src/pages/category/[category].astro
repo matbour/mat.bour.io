@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import CategoryFilter from '../../components/CategoryFilter.astro';
+import { getPosts } from '../../lib/posts';
+import { CATEGORIES, type Category } from '../../site.config';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const available = [...new Set(posts.map((p) => p.data.category))];
+  return available.map((category) => ({
+    params: { category },
+    props: { posts: posts.filter((p) => p.data.category === category), available },
+  }));
+}
+
+const { category } = Astro.params as { category: Category };
+const { posts, available } = Astro.props;
+const label = CATEGORIES[category];
+---
+
+<Base title={label} description={`Posts about ${label.toLowerCase()} by Mathieu Bour.`}>
+  <h1 class="visually-hidden">{label}</h1>
+  <CategoryFilter current={category} available={available} />
+  <PostList posts={posts} />
+</Base>

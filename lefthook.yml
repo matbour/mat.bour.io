@@ -1,0 +1,14 @@
+# Git hooks, installed by `bun install` (see the "prepare" script).
+# Skip once with `LEFTHOOK=0 git commit ...`.
+
+pre-commit:
+  commands:
+    format:
+      # Formats only the staged files and stages them again.
+      run: bun fmt --staged
+
+pre-push:
+  commands:
+    check:
+      # Types and the content schema (front matter of every post).
+      run: bun run check

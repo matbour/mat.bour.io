@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import CategoryFilter from '../components/CategoryFilter.astro';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+const available = [...new Set(posts.map((p) => p.data.category))];
+---
+
+<Base>
+  <section class="intro">
+    {/* TODO: make this yours. Two or three sentences: what you do, what you care about, what you write about. */}
+    <p>
+      I'm Mathieu, a software engineer. I write here about the systems I build at work, the side projects I tinker with
+      at home, and tennis.
+    </p>
+    <p class="muted">
+      More <a href="/about/">about me</a>, or what I've been <a href="/projects/">building</a>.
+    </p>
+  </section>
+
+  <CategoryFilter available={available} />
+  <PostList posts={posts} />
+</Base>
+
+<style>
+  .intro {
+    margin-bottom: 3.5rem;
+    font-size: 1.15rem;
+    line-height: 1.55;
+  }
+
+  .intro p {
+    margin: 0;
+  }
+
+  .intro p + p {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+</style>

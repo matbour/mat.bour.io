@@ -1,0 +1,59 @@
+---
+import { SITE } from '../site.config';
+const year = new Date().getFullYear();
+---
+
+<footer class="wrap site-footer">
+  <ul>
+    {SITE.links.map((link) => (
+      <li>
+        <a href={link.href} rel={link.href.startsWith('http') ? 'me noopener' : undefined}>
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p>Built with Astro and served from an Orange Pi at home.</p>
+  <p>
+    © {year} {SITE.author}
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .site-footer::before {
+    content: '';
+    display: block;
+    width: 4rem;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: var(--muted);
+  }
+
+  a:hover {
+    color: var(--ink);
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPosts, postUrl, readingTime, slugifyTag } from '../../lib/posts';
+import { CATEGORIES } from '../../site.config';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { id: post.id },
+    // Posts are sorted newest first.
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, updated, category, tags, draft } = post.data;
+
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const minutes = readingTime(post.body);
+---
+
+<Base title={title} description={description} image={`/og/${post.id}.png`} type="article" publishedTime={date}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      <p class="meta">
+        <time datetime={date.toISOString()}>{fmt.format(date)}</time> in
+        <a href={`/category/${category}/`}>{CATEGORIES[category]}</a>, {minutes} min read{draft && <em>, draft</em>}
+      </p>
+      {updated && (
+        <p class="meta">
+          Updated <time datetime={updated.toISOString()}>{fmt.format(updated)}</time>
+        </p>
+      )}
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {tags.length > 0 && (
+      <p class="tags">
+        Tagged{' '}
+        {tags.map((tag, i) => (
+          <>
+            <a href={`/tags/${slugifyTag(tag)}/`}>{tag}</a>
+            {i < tags.length - 1 && ', '}
+          </>
+        ))}
+      </p>
+    )}
+  </article>
+
+  {(newer || older) && (
+    <nav class="pager" aria-label="More posts">
+      {older && (
+        <div>
+          <span class="muted">Previous</span>
+          <a href={postUrl(older)}>{older.data.title}</a>
+        </div>
+      )}
+      {newer && (
+        <div class="next">
+          <span class="muted">Next</span>
+          <a href={postUrl(newer)}>{newer.data.title}</a>
+        </div>
+      )}
+    </nav>
+  )}
+</Base>
+
+<style>
+  header {
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .meta {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .meta a {
+    color: inherit;
+  }
+
+  .tags {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9rem;
+  }
+
+  .pager div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .pager .next {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  @media (max-width: 30rem) {
+    .pager {
+      grid-template-columns: 1fr;
+    }
+
+    .pager .next {
+      grid-column: 1;
+      text-align: left;
+    }
+  }
+</style>

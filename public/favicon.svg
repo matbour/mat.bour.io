@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    circle { fill: #1c1e21; }
+    path { fill: #fdfdfc; }
+    @media (prefers-color-scheme: dark) {
+      circle { fill: #e3e4e6; }
+      path { fill: #16181b; }
+    }
+  </style>
+  <circle cx="16" cy="16" r="15"/>
+  <path d="M16 4a12 12 0 0 1 0 24z"/>
+</svg>

@@ -1,0 +1,37 @@
+{
+	# HTTPS is handled upstream (Cloudflare Tunnel, then Coolify's proxy),
+	# so this container only serves plain HTTP on port 80.
+	auto_https off
+	admin off
+}
+
+:80 {
+	root * /srv
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	# Hashed build assets never change.
+	header /_astro/* Cache-Control "public, max-age=31536000, immutable"
+
+	# Images and fonts outside /_astro: cache for a week.
+	@media {
+		path *.png *.jpg *.jpeg *.webp *.avif *.svg *.ico *.woff *.woff2
+		not path /_astro/*
+	}
+	header @media Cache-Control "public, max-age=604800"
+
+	# Everything else (HTML, RSS, sitemap): revalidate so new posts show up right away.
+	header ?Cache-Control "public, max-age=0, must-revalidate"
+
+	file_server
+
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server
+	}
+}

@@ -10,14 +10,22 @@ lang: fr
 
 **Cet article n'est pas sponsorisé.** Personne ne m'a payé pour citer ces marques, et aucun lien n'est affilié.
 
-Si je devais recommander un setup fibre fin 2026 à un fana de tech, par exemple un ingénieur en full remote, je décrirais celui que j'ai chez moi : une offre fibre seule, un ONT à la place de la box, un routeur à soi et un point d'accès Wi-Fi placé là où sont les gens. Le débit est là, il n'y a plus de box à caser, et tout se gère depuis une seule application.
+Ce setup fibre est celui que je recommanderais fin 2026 à un fana de tech, par exemple un ingénieur en full remote. Il n'était pourtant pas prévu : au départ, je voulais juste changer d'offre.
 
-Pendant des années, j'étais chez [Free](https://www.free.fr/) avec une [Freebox Delta](https://fr.wikipedia.org/wiki/Freebox), sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique.
+## Le déclic : Pure Fibre
 
-## Les quatre choix qui comptent
+Tout est parti d'une annonce. [Bouygues Telecom](https://www.bouyguestelecom.fr/) a sorti [B&You Pure Fibre](https://www.bouyguestelecom.fr/offres-internet/byou-pure-fibre), une offre fibre seule, sans TV ni téléphone fixe. Exactement ce dont j'avais besoin, et rien de plus.
 
-- **Une offre fibre seule.** Je n'ai besoin ni de la TV ni du téléphone fixe, donc je ne les paie pas. J'ai pris [B&You Pure Fibre Plus](https://www.bouyguestelecom.fr/offres-internet/byou-pure-fibre) chez [Bouygues Telecom](https://www.bouyguestelecom.fr/) : 8 Gb/s en descendant, 1 Gb/s en montant, sans engagement, affichée à 27,99 € par mois à l'été 2026.
-- **Un ONT à la place de la box.** Une box opérateur fait tout à la fois : convertisseur fibre, routeur, Wi-Fi. Avec cette offre, on peut demander un ONT seul, qui ne fait que convertir la fibre en Ethernet.
+À ce moment-là, j'étais chez [Free](https://www.free.fr/) avec une [Freebox Delta](https://fr.wikipedia.org/wiki/Freebox), sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique. J'ai voulu changer.
+
+J'ai pris la version Plus : 8 Gb/s en descendant, 1 Gb/s en montant, sans engagement, affichée à 27,99 € par mois à l'été 2026.
+
+## Se passer de la box
+
+En faisant des recherches, je me suis rendu compte que c'était possible de se passer de la box.
+
+Une box opérateur fait tout à la fois : convertisseur fibre, routeur, Wi-Fi. Avec cette offre, on peut demander un ONT seul, qui ne fait que convertir la fibre en Ethernet. Il restait donc à choisir ce qui remplacerait le reste :
+
 - **Un routeur à soi.** Une [UniFi Cloud Gateway Fiber](https://store.ui.com/eu/en/products/ucg-fiber), avec un port WAN à 10 GbE. C'est elle qui décide de ce qui entre et de ce qui sort, et elle ne change pas si je change d'opérateur.
 - **Le Wi-Fi à part.** Un point d'accès enfermé dans une gaine technique arrose surtout le mur. Le mien est dans une autre pièce, alimenté par le câble Ethernet grâce au [PoE](https://fr.wikipedia.org/wiki/Power_over_Ethernet).
 
@@ -51,6 +59,19 @@ L'ONT est un petit boîtier Nokia avec quatre LED (alimentation, PON, alarme, do
 ![Le même coffret avec le plastron du haut remis et les portes ouvertes : on ne voit plus que les LED de l'ONT, et la passerelle et l'Orange Pi restent accessibles en dessous](../../assets/posts/meilleur-setup-fibre-2026/gtl-plastron.jpg)
 
 Une fois le plastron remis, il ne reste que les LED de l'ONT, et la porte du coffret ferme.
+
+## La configuration Bouygues
+
+Sans Bbox, c'est la passerelle qui reçoit directement l'adresse IPv4 publique. Il faut qu'elle se présente au réseau Bouygues comme une Bbox. Tout se règle dans l'interface UniFi, sans SSH. J'ai suivi le récapitulatif de [lafibre.info](https://lafibre.info), où les abonnés qui remplacent leur box partagent ce qui marche.
+
+| Paramètre   | Valeur                                            |
+| ----------- | ------------------------------------------------- |
+| VLAN        | 100                                               |
+| Adresse MAC | celle de la Bbox, clonée                          |
+| IPv4        | DHCP, vendor class (option 60) `BYGTELIAD`, CoS 6 |
+| IPv6        | DHCPv6, CoS 6, délégation de préfixe en `/60`     |
+
+Je n'y suis pas arrivé du premier coup. Pendant quelques jours, la Bbox est restée dans le circuit, avec la passerelle UniFi dans sa DMZ. Ça marchait, mais avec deux routeurs qui font du NAT l'un derrière l'autre, et deux réseaux qui démarrent tous les deux en `192.168.1.x`. Avec l'ONT, il n'y a plus qu'un seul routeur. La Bbox est dans un tiroir, au cas où.
 
 ## La forme du réseau
 
@@ -95,19 +116,6 @@ Le U7 Long-Range diffuse deux réseaux Wi-Fi :
 En 5 GHz, il émet sur un canal de 160 MHz. C'est large pour un immeuble, mais l'interface UniFi note l'expérience Wi-Fi comme excellente. Au moment où j'écris, une quinzaine d'appareils y sont connectés.
 
 Pour l'instant, les deux réseaux Wi-Fi arrivent dans le même LAN. Mettre l'IoT dans un VLAN séparé, avec des règles de pare-feu entre les deux, est la prochaine étape.
-
-## La configuration Bouygues
-
-Sans Bbox, c'est la passerelle qui reçoit directement l'adresse IPv4 publique. Il faut qu'elle se présente au réseau Bouygues comme une Bbox. Tout se règle dans l'interface UniFi, sans SSH. J'ai suivi le récapitulatif de [lafibre.info](https://lafibre.info), où les abonnés qui remplacent leur box partagent ce qui marche.
-
-| Paramètre   | Valeur                                            |
-| ----------- | ------------------------------------------------- |
-| VLAN        | 100                                               |
-| Adresse MAC | celle de la Bbox, clonée                          |
-| IPv4        | DHCP, vendor class (option 60) `BYGTELIAD`, CoS 6 |
-| IPv6        | DHCPv6, CoS 6, délégation de préfixe en `/60`     |
-
-Je n'y suis pas arrivé du premier coup. Pendant quelques jours, la Bbox est restée dans le circuit, avec la passerelle UniFi dans sa DMZ. Ça marchait, mais avec deux routeurs qui font du NAT l'un derrière l'autre, et deux réseaux qui démarrent tous les deux en `192.168.1.x`. Avec l'ONT, il n'y a plus qu'un seul routeur. La Bbox est dans un tiroir, au cas où.
 
 ## Héberger chez soi sans ouvrir de port
 

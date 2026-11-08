@@ -8,16 +8,18 @@ tags: [self-hosting, networking, unifi, fibre, cloudflare]
 lang: fr
 ---
 
+**Cet article n'est pas sponsorisé.** Personne ne m'a payé pour citer ces marques, et aucun lien n'est affilié.
+
 Si je devais recommander un setup fibre fin 2026 à un fana de tech, par exemple un ingénieur en full remote, je décrirais celui que j'ai chez moi : une offre fibre seule, un ONT à la place de la box, un routeur à soi et un point d'accès Wi-Fi placé là où sont les gens. Le débit est là, il n'y a plus de box à caser, et tout se gère depuis une seule application.
 
-Pendant des années, j'étais chez Free avec une Freebox Delta, sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique.
+Pendant des années, j'étais chez [Free](https://www.free.fr/) avec une [Freebox Delta](https://fr.wikipedia.org/wiki/Freebox), sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique.
 
 ## Les quatre choix qui comptent
 
-- **Une offre fibre seule.** Je n'ai besoin ni de la TV ni du téléphone fixe, donc je ne les paie pas. J'ai pris B&You Pure Fibre Plus chez Bouygues : 8 Gb/s en descendant, 1 Gb/s en montant, sans engagement, affichée à 27,99 € par mois à l'été 2026.
+- **Une offre fibre seule.** Je n'ai besoin ni de la TV ni du téléphone fixe, donc je ne les paie pas. J'ai pris [B&You Pure Fibre Plus](https://www.bouyguestelecom.fr/offres-internet/byou-pure-fibre) chez [Bouygues Telecom](https://www.bouyguestelecom.fr/) : 8 Gb/s en descendant, 1 Gb/s en montant, sans engagement, affichée à 27,99 € par mois à l'été 2026.
 - **Un ONT à la place de la box.** Une box opérateur fait tout à la fois : convertisseur fibre, routeur, Wi-Fi. Avec cette offre, on peut demander un ONT seul, qui ne fait que convertir la fibre en Ethernet.
-- **Un routeur à soi.** Une UniFi Cloud Gateway Fiber, avec un port WAN à 10 GbE. C'est elle qui décide de ce qui entre et de ce qui sort, et elle ne change pas si je change d'opérateur.
-- **Le Wi-Fi à part.** Un point d'accès enfermé dans une gaine technique arrose surtout le mur. Le mien est dans une autre pièce, alimenté par le câble Ethernet.
+- **Un routeur à soi.** Une [UniFi Cloud Gateway Fiber](https://store.ui.com/eu/en/products/ucg-fiber), avec un port WAN à 10 GbE. C'est elle qui décide de ce qui entre et de ce qui sort, et elle ne change pas si je change d'opérateur.
+- **Le Wi-Fi à part.** Un point d'accès enfermé dans une gaine technique arrose surtout le mur. Le mien est dans une autre pièce, alimenté par le câble Ethernet grâce au [PoE](https://fr.wikipedia.org/wiki/Power_over_Ethernet).
 
 ## De l'arrivée de la fibre au coffret
 
@@ -27,20 +29,20 @@ La fibre n'arrivait pas au bon endroit. Elle entre dans l'appartement en haut à
 
 ![L'entrée vue de plus loin, avec le trajet complet : arrivée de la fibre, goulotte, plinthe, tour de la porte d'entrée, puis arrivée dans le GTL sur la droite](../../assets/posts/meilleur-setup-fibre-2026/parcours-entree.jpg)
 
-Le GTL, c'est la gaine technique logement : l'emplacement qui regroupe le tableau électrique et le coffret de communication. Chez moi, c'est une colonne Schneider Electric Resi9, avec un tableau de brassage de 8 ports RJ45, deux prises 230 V et une grille perforée sur laquelle on fixe les boîtiers avec des clips « Fix Box ».
+Le GTL, c'est la gaine technique logement : l'emplacement qui regroupe le tableau électrique et le [coffret de communication](https://www.se.com/fr/fr/faqs/FAQ000276664/). Chez moi, c'est une colonne [Schneider Electric Resi9](https://www.se.com/fr/fr/about-us/newsroom/news/press-releases/schneider-electric-pr%C3%A9sente-resi9-son-tableau-%C3%A9lectrique-universel-connect%C3%A9-et-s%C3%A9curis%C3%A9-de-nouvelle-g%C3%A9n%C3%A9ration-59c384d961cb7d6b258b4687/), avec un tableau de brassage de 8 ports RJ45, deux prises 230 V et une grille perforée sur laquelle on fixe les boîtiers avec des clips « Fix Box ».
 
 ## Le matériel
 
 ![Le coffret de communication ouvert, annoté : tableau de brassage, PTO, jarretière optique, ONT Nokia, prises 230 V, passerelle UCG Fiber et Orange Pi 5 Plus](../../assets/posts/meilleur-setup-fibre-2026/gtl-ouvert.jpg)
 
-| Équipement                            | Rôle                                                                 |
-| ------------------------------------- | -------------------------------------------------------------------- |
-| PTO                                   | arrivée de la fibre dans le coffret                                  |
-| ONT Nokia (fourni par Bouygues)       | convertit la fibre XGS-PON en Ethernet 10 Gb/s                       |
-| UniFi Cloud Gateway Fiber (UCG Fiber) | routeur, pare-feu, DHCP et contrôleur UniFi                          |
-| Orange Pi 5 Plus                      | serveur maison : Docker, Coolify, ce blog                            |
-| UniFi Switch Ultra (USW Ultra)        | petit switch dans une autre pièce, alimenté en PoE par la passerelle |
-| UniFi U7 Long-Range                   | point d'accès Wi-Fi 7, alimenté en PoE par le switch                 |
+| Équipement                                                                                                          | Rôle                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| PTO                                                                                                                 | arrivée de la fibre dans le coffret                                                                 |
+| ONT Nokia (fourni par Bouygues)                                                                                     | convertit la fibre [XGS-PON](https://fr.wikipedia.org/wiki/10G-PON) en Ethernet 10 Gb/s             |
+| [UniFi Cloud Gateway Fiber](https://store.ui.com/eu/en/products/ucg-fiber) (UCG Fiber)                              | routeur, pare-feu, DHCP et contrôleur [UniFi](https://ui.com/)                                      |
+| [Orange Pi 5 Plus](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-plus.html) | serveur maison : [Docker](https://www.docker.com/), Coolify, ce blog                                |
+| [UniFi Switch Ultra](https://store.ui.com/eu/en/products/usw-ultra) (USW Ultra)                                     | petit switch dans une autre pièce, alimenté en PoE par la passerelle                                |
+| [UniFi U7 Long-Range](https://store.ui.com/eu/en/products/u7-lr)                                                    | point d'accès [Wi-Fi 7](https://fr.wikipedia.org/wiki/IEEE_802.11be), alimenté en PoE par le switch |
 
 La pièce centrale est la UCG Fiber. Elle a un port WAN RJ45 à 10 GbE, deux cages SFP+ à 10 Gb/s et quatre ports 2,5 GbE, dont un en PoE+. Elle tient à plat dans le coffret, avec deux clips, et fait tourner l'application UniFi Network, donc pas besoin d'un contrôleur à part.
 
@@ -111,7 +113,7 @@ Je n'y suis pas arrivé du premier coup. Pendant quelques jours, la Bbox est res
 
 C'est le bonus d'avoir son propre réseau. L'Orange Pi est branché en 2,5 GbE sur la passerelle, juste en dessous d'elle dans le coffret. Il fait tourner [Coolify](https://coolify.io) et plusieurs applications, dont ce blog.
 
-Pour les rendre accessibles depuis Internet, je n'ouvre aucun port sur le routeur. L'Orange Pi lance `cloudflared`, qui ouvre une connexion **sortante** vers Cloudflare. Les visiteurs arrivent chez Cloudflare, et leurs requêtes redescendent par ce tunnel.
+Pour les rendre accessibles depuis Internet, je n'ouvre aucun port sur le routeur. L'Orange Pi lance [`cloudflared`](https://developers.cloudflare.com/tunnel/), qui ouvre une connexion **sortante** vers [Cloudflare](https://www.cloudflare.com/fr-fr/). Les visiteurs arrivent chez Cloudflare, et leurs requêtes redescendent par ce tunnel.
 
 ```text
 visiteur

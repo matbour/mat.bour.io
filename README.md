@@ -24,8 +24,6 @@ draft: true # visible in dev only; set to false to publish
 
 Images go next to the post or in `public/`. Projects are in `src/content/projects/`, the about page is `src/pages/about.md`, and your name, links and categories are in `src/site.config.ts`.
 
-`src/content/posts/markdown-style-guide.md` is a permanent draft that shows every element, handy when changing styles.
-
 ## Checking
 
 ```sh

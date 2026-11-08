@@ -8,7 +8,7 @@ tags: [self-hosting, networking, unifi, fibre, cloudflare]
 lang: fr
 ---
 
-Si je devais recommander un setup fibre à un particulier fin 2026, je décrirais celui que j'ai chez moi : une offre fibre seule, un ONT à la place de la box, un routeur à soi et un point d'accès Wi-Fi placé là où sont les gens. Le débit est là, il n'y a plus de box à caser, et tout se gère depuis une seule application.
+Si je devais recommander un setup fibre fin 2026 à un fana de tech, par exemple un ingénieur en full remote, je décrirais celui que j'ai chez moi : une offre fibre seule, un ONT à la place de la box, un routeur à soi et un point d'accès Wi-Fi placé là où sont les gens. Le débit est là, il n'y a plus de box à caser, et tout se gère depuis une seule application.
 
 Pendant des années, j'étais chez Free avec une Freebox Delta, sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique.
 

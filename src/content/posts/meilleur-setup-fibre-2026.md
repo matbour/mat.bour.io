@@ -1,53 +1,54 @@
 ---
-title: La fibre dans le GTL, sans box
-description: Comment j'ai remplacé une box opérateur encombrante par un ONT, une passerelle UniFi et un point d'accès Wi-Fi, le tout rangé dans la gaine technique de l'appartement.
+title: Le meilleur setup fibre pour un particulier en 2026, selon moi
+description: Une offre fibre seule, un ONT à la place de la box, une passerelle UniFi et un point d'accès Wi-Fi 7. Le réseau que je recommanderais aujourd'hui, et comment il est installé chez moi.
 date: 2026-11-07
+updated: 2026-11-08
 category: side-projects
 tags: [self-hosting, networking, unifi, fibre, cloudflare]
 lang: fr
 ---
 
-Pendant des années, j'étais chez Free avec une Freebox Delta, sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique. Aujourd'hui, la fibre arrive dans le GTL, un petit ONT la convertit en Ethernet juste à côté, et mon routeur est branché directement dessus. Plus de box nulle part, et la porte de la gaine ferme.
+Si je devais recommander un setup fibre à un particulier fin 2026, je décrirais celui que j'ai chez moi : une offre fibre seule, un ONT à la place de la box, un routeur à soi et un point d'accès Wi-Fi placé là où sont les gens. Le débit est là, il n'y a plus de box à caser, et tout se gère depuis une seule application.
 
-Cet article décrit le matériel, la forme du réseau, et ce que ça permet : héberger des applications chez moi sans ouvrir un seul port.
+Pendant des années, j'étais chez Free avec une Freebox Delta, sans la TV, pour environ 50 € par mois. Ça marchait, mais c'était cher pour ce que j'en faisais, et le serveur Delta est un gros boîtier qui ne rentre dans aucun placard technique.
 
-## Le GTL
+## Les quatre choix qui comptent
 
-Le GTL, c'est la gaine technique logement. Dans un logement neuf ou rénové, la norme NF C 15-100 impose un emplacement qui regroupe le tableau électrique et le coffret de communication. Chez moi, c'est une colonne Schneider Electric Resi9 : le tableau électrique en haut, le coffret de communication en dessous.
+- **Une offre fibre seule.** Je n'ai besoin ni de la TV ni du téléphone fixe, donc je ne les paie pas. J'ai pris B&You Pure Fibre Plus chez Bouygues : 8 Gb/s en descendant, 1 Gb/s en montant, sans engagement, affichée à 27,99 € par mois à l'été 2026.
+- **Un ONT à la place de la box.** Une box opérateur fait tout à la fois : convertisseur fibre, routeur, Wi-Fi. Avec cette offre, on peut demander un ONT seul, qui ne fait que convertir la fibre en Ethernet.
+- **Un routeur à soi.** Une UniFi Cloud Gateway Fiber, avec un port WAN à 10 GbE. C'est elle qui décide de ce qui entre et de ce qui sort, et elle ne change pas si je change d'opérateur.
+- **Le Wi-Fi à part.** Un point d'accès enfermé dans une gaine technique arrose surtout le mur. Le mien est dans une autre pièce, alimenté par le câble Ethernet.
 
-Le coffret contient déjà ce qu'il faut pour un réseau propre :
+## De l'arrivée de la fibre au coffret
 
-- la **PTO** (prise terminale optique), où arrive la fibre de l'immeuble ;
-- un **tableau de brassage** de 8 ports RJ45 et une sortie TV/SAT, d'où partent les câbles vers les prises murales des pièces ;
-- deux **prises 230 V** intégrées, pour alimenter les équipements sans rallonge qui sort de la gaine ;
-- une grille perforée sur laquelle on fixe les boîtiers avec des clips Schneider « Fix Box ».
+La fibre n'arrivait pas au bon endroit. Elle entre dans l'appartement en haut à gauche de l'entrée, alors que le coffret de communication est de l'autre côté de la pièce. Pour éviter un câble apparent, j'ai monté des goulottes : elles font le tour de la première porte, passent dans les plinthes, repartent autour de la porte d'entrée et continuent jusqu'au GTL.
 
-Le problème, c'est qu'une box opérateur n'est pas faite pour y entrer. Elle fait tout à la fois : convertisseur fibre, routeur, Wi-Fi, parfois téléphone et TV. Elle est trop grosse pour le coffret, et même si elle rentrait, un point d'accès Wi-Fi enfermé dans une gaine technique au fond d'un couloir arrose surtout le mur.
+![L'entrée vue de près : la fibre arrive sur une petite plaque en haut à gauche, descend par la goulotte autour de la première porte, suit la plinthe, puis fait le tour de la porte d'entrée](../../assets/posts/meilleur-setup-fibre-2026/parcours-arrivee.jpg)
 
-L'idée est donc de séparer les rôles : ce qui touche à la fibre et au routage va dans le GTL, et le Wi-Fi va là où sont les gens.
+![L'entrée vue de plus loin, avec le trajet complet : arrivée de la fibre, goulotte, plinthe, tour de la porte d'entrée, puis arrivée dans le GTL sur la droite](../../assets/posts/meilleur-setup-fibre-2026/parcours-entree.jpg)
+
+Le GTL, c'est la gaine technique logement : l'emplacement qui regroupe le tableau électrique et le coffret de communication. Chez moi, c'est une colonne Schneider Electric Resi9, avec un tableau de brassage de 8 ports RJ45, deux prises 230 V et une grille perforée sur laquelle on fixe les boîtiers avec des clips « Fix Box ».
 
 ## Le matériel
 
-![Le coffret de communication ouvert : en haut le tableau de brassage RJ45, la PTO et l'ONT Nokia ; au milieu les prises 230 V et la passerelle UniFi tenue par des clips verts ; en bas l'Orange Pi dans son boîtier noir ventilé](../../assets/posts/fibre-gtl/gtl-ouvert.jpg)
-
-De haut en bas sur la photo :
+![Le coffret de communication ouvert, annoté : tableau de brassage, PTO, jarretière optique, ONT Nokia, prises 230 V, passerelle UCG Fiber et Orange Pi 5 Plus](../../assets/posts/meilleur-setup-fibre-2026/gtl-ouvert.jpg)
 
 | Équipement                            | Rôle                                                                 |
 | ------------------------------------- | -------------------------------------------------------------------- |
-| PTO                                   | arrivée de la fibre dans le logement                                 |
+| PTO                                   | arrivée de la fibre dans le coffret                                  |
 | ONT Nokia (fourni par Bouygues)       | convertit la fibre XGS-PON en Ethernet 10 Gb/s                       |
 | UniFi Cloud Gateway Fiber (UCG Fiber) | routeur, pare-feu, DHCP et contrôleur UniFi                          |
 | Orange Pi 5 Plus                      | serveur maison : Docker, Coolify, ce blog                            |
 | UniFi Switch Ultra (USW Ultra)        | petit switch dans une autre pièce, alimenté en PoE par la passerelle |
 | UniFi U7 Long-Range                   | point d'accès Wi-Fi 7, alimenté en PoE par le switch                 |
 
-La pièce centrale est la UCG Fiber. Elle a un port WAN RJ45 à 10 GbE, deux cages SFP+ à 10 Gb/s et quatre ports 2,5 GbE, dont un en PoE+. Elle tient à plat dans le coffret, avec deux clips. C'est aussi elle qui fait tourner l'application UniFi Network, donc pas besoin d'un contrôleur à part.
+La pièce centrale est la UCG Fiber. Elle a un port WAN RJ45 à 10 GbE, deux cages SFP+ à 10 Gb/s et quatre ports 2,5 GbE, dont un en PoE+. Elle tient à plat dans le coffret, avec deux clips, et fait tourner l'application UniFi Network, donc pas besoin d'un contrôleur à part.
 
-L'ONT, c'est Bouygues qui me l'a envoyé. Avec l'offre B&You Pure Fibre Plus, on peut demander un ONT seul à la place de la Bbox. C'est un petit boîtier Nokia avec quatre LED (alimentation, PON, alarme, données), une entrée fibre et une sortie Ethernet. Il se pose à côté de la PTO, relié par une courte jarretière optique.
+L'ONT est un petit boîtier Nokia avec quatre LED (alimentation, PON, alarme, données), une entrée fibre et une sortie Ethernet. Il se pose à côté de la PTO, relié par une courte jarretière optique.
 
-![Le même coffret avec le plastron du haut remis : de la PTO et de l'ONT, on ne voit plus que les LED, et la passerelle reste accessible en dessous](../../assets/posts/fibre-gtl/gtl-plastron.jpg)
+![Le même coffret avec le plastron du haut remis et les portes ouvertes : on ne voit plus que les LED de l'ONT, et la passerelle et l'Orange Pi restent accessibles en dessous](../../assets/posts/meilleur-setup-fibre-2026/gtl-plastron.jpg)
 
-Une fois le plastron remis, il ne reste que les LED de l'ONT qui dépassent.
+Une fois le plastron remis, il ne reste que les LED de l'ONT, et la porte du coffret ferme.
 
 ## La forme du réseau
 
@@ -108,7 +109,7 @@ Je n'y suis pas arrivé du premier coup. Pendant quelques jours, la Bbox est res
 
 ## Héberger chez soi sans ouvrir de port
 
-C'est ce qui m'intéressait vraiment. L'Orange Pi est branché en 2,5 GbE sur la passerelle, juste en dessous d'elle dans le coffret. Il fait tourner [Coolify](https://coolify.io) et plusieurs applications, dont ce blog.
+C'est le bonus d'avoir son propre réseau. L'Orange Pi est branché en 2,5 GbE sur la passerelle, juste en dessous d'elle dans le coffret. Il fait tourner [Coolify](https://coolify.io) et plusieurs applications, dont ce blog.
 
 Pour les rendre accessibles depuis Internet, je n'ouvre aucun port sur le routeur. L'Orange Pi lance `cloudflared`, qui ouvre une connexion **sortante** vers Cloudflare. Les visiteurs arrivent chez Cloudflare, et leurs requêtes redescendent par ce tunnel.
 
@@ -136,7 +137,9 @@ Le détail du pipeline, de la construction de l'image jusqu'au déploiement, est
 
 ## Le bilan
 
-- **Moins cher.** Je payais environ 50 € par mois chez Free. L'offre fibre seule de B&You, sans TV ni téléphone, me coûte moins cher.
-- **Le même débit, en mieux exploité.** 8 Gb/s en descendant et 1 Gb/s en montant, avec un port WAN à 10 GbE et un serveur en 2,5 GbE pour en profiter.
-- **Rangé.** La fibre, l'ONT, le routeur et le serveur tiennent dans le coffret de communication. La porte ferme, et on ne voit plus de câble.
+- **Moins cher.** Je payais environ 50 € par mois chez Free.
+- **Le débit est là.** 8 Gb/s en descendant et 1 Gb/s en montant, avec un port WAN à 10 GbE et un serveur en 2,5 GbE pour en profiter.
+- **Rangé.** La fibre, l'ONT, le routeur et le serveur tiennent dans le coffret de communication, et on ne voit plus de câble.
 - **Une seule interface.** La passerelle, le switch et le Wi-Fi se gèrent depuis la même application UniFi, chez moi ou à distance.
+
+Ce setup a quand même ses limites. Les 8 Gb/s dépendent de l'éligibilité au XGS-PON, il faut acheter son matériel, et il faut être prêt à passer une soirée sur la configuration. Si vous voulez la TV ou le téléphone fixe sans y penser, une box reste plus simple. Si vous voulez un réseau qui vous appartient, c'est celui que je vous conseillerais.
